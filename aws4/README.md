@@ -12,6 +12,8 @@ An example pre-request script using this library:
 var opts = {service: 's3', path: request.path};
 var awsObj = aws4.sign(opts, {accessKeyId: variables.get("AWS_ACCESS_KEY_ID"), secretAccessKey: variables.get("AWS_SECRET_ACCESS_KEY")});
 
+request.path = awsObj.path;
+
 for (var header in awsObj.headers) {
     request.headers[header] = awsObj.headers[header];
 }
@@ -25,8 +27,9 @@ for (var header in awsObj.headers) {
   - [S3 - GET Bucket](#s3---get-bucket)
   - [S3 - GET Bucket with querystring](#s3---get-bucket-with-querystring)
   - [S3 - GET Object](#s3---get-object)
-  - [S3 - PUT Object](#cloudwatch---setalarmstate)
-  - [Cloudwatch - SetAlarmState](#s3---put-object)
+  - [S3 - PUT Object](#s3---put-object)
+  - [Cloudwatch - SetAlarmState](#cloudwatch---setalarmstate)
+  - [AWS Lambda](#aws---lambda)
 - [Sample Runscope Test](#sample-runscope-test)
 
 ## Usage
@@ -69,6 +72,8 @@ You would use the following pre-request script:
 var opts = {service: 's3', path: request.path};
 var awsObj = aws4.sign(opts, {accessKeyId: variables.get("AWS_ACCESS_KEY_ID"), secretAccessKey: variables.get("AWS_SECRET_ACCESS_KEY")});
 
+request.path = awsObj.path;
+
 for (var header in awsObj.headers) {
     request.headers[header] = awsObj.headers[header];
 }
@@ -86,6 +91,8 @@ To use the scripts, make sure you have two variables in your environment's "Init
 var opts = {service: 's3', path: request.path};
 var awsObj = aws4.sign(opts, {accessKeyId: variables.get("AWS_ACCESS_KEY_ID"), secretAccessKey: variables.get("AWS_SECRET_ACCESS_KEY")});
 
+request.path = awsObj.path;
+
 for (var header in awsObj.headers) {
     request.headers[header] = awsObj.headers[header];
 }
@@ -102,6 +109,8 @@ var fullPath = "/"+splitURL[splitURL.length-1];
 var opts = {service: 's3', path: fullPath};
 var awsObj = aws4.sign(opts, {accessKeyId: variables.get("AWS_ACCESS_KEY_ID"), secretAccessKey: variables.get("AWS_SECRET_ACCESS_KEY")});
 
+request.path = awsObj.path;
+
 for (var header in awsObj.headers) {
     request.headers[header] = awsObj.headers[header];
 }
@@ -114,6 +123,8 @@ for (var header in awsObj.headers) {
 ```js
 var opts = {service: 's3', path: request.path};
 var awsObj = aws4.sign(opts, {accessKeyId: variables.get("AWS_ACCESS_KEY_ID"), secretAccessKey: variables.get("AWS_SECRET_ACCESS_KEY")});
+
+request.path = awsObj.path;
 
 for (var header in awsObj.headers) {
     request.headers[header] = awsObj.headers[header];
@@ -129,6 +140,8 @@ Select "+Add Body" and add `Test Body`.
 ```js
 var opts = {service: 's3', path: request.path, method: request.method, body: request.body};
 var awsObj = aws4.sign(opts, {accessKeyId: variables.get("AWS_ACCESS_KEY_ID"), secretAccessKey: variables.get("AWS_SECRET_ACCESS_KEY")});
+
+request.path = awsObj.path;
 
 for (var header in awsObj.headers) {
     request.headers[header] = awsObj.headers[header];
@@ -159,7 +172,22 @@ for (var key in request.params) {
 var opts = {service: 'monitoring', path: path, region: 'eu-west-1', method: request.method};
 var awsObj = aws4.sign(opts, {accessKeyId: variables.get("AWS_ACCESS_KEY_ID"), secretAccessKey: variables.get("AWS_SECRET_ACCESS_KEY")});
 
+request.path = awsObj.path;
+
 // Paste the headers on to the request
+for (var header in awsObj.headers) {
+    request.headers[header] = awsObj.headers[header];
+}
+```
+
+### AWS Lambda
+
+```
+var opts = {service: 'lambda', path: request.path, method: request.method, body: request.body, region: variables.get("region"), headers: request.headers};
+var awsObj = aws4.sign(opts, {accessKeyId: variables.get("AWS_ACCESS_KEY_ID"), secretAccessKey: variables.get("AWS_SECRET_ACCESS_KEY")});
+
+request.path = awsObj.path;
+
 for (var header in awsObj.headers) {
     request.headers[header] = awsObj.headers[header];
 }
