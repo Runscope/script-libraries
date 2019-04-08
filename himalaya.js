@@ -6,9 +6,15 @@
  * ```js
     var responseStr = response.body.replace(/[\n\r]+/g, '').replace(/\s{2,}/g, '');
     var result = himalaya.parse(responseStr);
-    var head = _.find(result[1].children, function(tag) {
-        return tag.tagName === 'head';
+    
+    var html = _.find(result, function(element) {
+        return element.tagName === 'html';
+    })
+
+    var head = _.find(html.children, function(child) {
+        return child.tagName === 'head';
     });
+    
     assert(head !== undefined, 'head is referenced');
  * ```
  *
